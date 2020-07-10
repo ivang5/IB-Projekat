@@ -4,9 +4,9 @@ USE ib;
 
 CREATE TABLE users(
 	id INT AUTO_INCREMENT,
-    email VARCHAR(30) NOT NULL,
-	password VARCHAR(10) NOT NULL, 
-	certificate VARCHAR(50) NOT NULL, 
+    email VARCHAR(35) NOT NULL,
+	password VARCHAR(20) NOT NULL, 
+	certificate VARCHAR(100) NOT NULL, 
 	active TINYINT(1),
 	authority VARCHAR(10) NOT NULL,
     PRIMARY KEY(id)
