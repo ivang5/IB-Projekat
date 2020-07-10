@@ -1,17 +1,40 @@
-Projekat sadrži kod koji biste mogli da iskoristite kao početnu tačku za projekat. 
-Pom.xml datoteka sadrži zavisnosti potrebne za rukovanje keystore datotekama.
+Ukoliko se sa importovanjem projekta ne ubace sve potrebne biblioteke skinuti zip fajl sa gita i onda odatle
+importovati aplikacije, na taj nacin ce sigurno sve biti ukljuceno.
 
-U primeru je još dato kako se kroz rest kontroler (Demo.java) može raditi upload i download. 
-Takođe, dat je primer download dugmeta na front-end strani (main.js, funkcionalnost je proverena u Mozilla browser-u). 
-Datoteke koje se dinamički kreiraju možete naći u target/classes/files/ folderu pod aplikacijom 
-(čitava putanja se ispiše prilikom pokretanja rešenja).
+JKS datoteke nisu unapred spremne jer se prave na osnovu unetog email-a(prave email adrese).
 
-Kako biste isprobali rešenje, prvo preko REST klijenta pogodite putanju: localhost:8443/api/demo koja u pomenutom
-folderu kreira datoteku demo.txt.
-Potom možete sa indeks stranice pokušati da odradite download: localhost:8443/api/demo
+Pre pokretanja otici u klasu UserController koja se nalazi u paketu ib.project.rest u web aplikaciji, pa zatim
+u metodi userJks promeniti String 'keyStoreFile' tako da sadrzi putanju do data foldera klijentske aplikacije.
 
-Rešenje ima zavisnosti i konfiguraciju za h2 bazu podataka. To se, naravno, može promeniti.
-U slučaju da nastavite koristiti h2 bazu, možete da pregledate bazu na linku: http://localhost:8443/h2-console/.
+Sadrzaj import.sql fajla koji se nalazi u resources kopirati u MySQL query i kliknuti na execute
 
-Srećan rad!
-
+Koriscenje aplikacije:
+- Pokrenuti web aplikaciju(DemoApplication).
+- U pretrazivacu otici na putanju: https://localhost:8443/
+- Kliknuti na link za registraciju i registrovati se sa postojecim email-om, password naravno ne treba biti pravi,
+  ali je bitno da email bude pravi(postojeci), onaj koji ce se kasnije koristiti u klijent aplikaciji za slanje/primanje
+  email-ova, jer ce se na osnovu njega nazivati jks fajl. Ukoliko korisnik nece sam sebi slati mail, potrebno je 
+  registrovati jos jednog usera.
+- Ulogovati se kao administrator (email: user1@example.com, password: user1) i spustiti se na dno stranice.
+  U tabeli klikom na email usera otvorice se mali prozor u kome postoji dugme za aktivaciju naloga (dugme je vidljivo
+  samo administratoru i samo ako korisnikov nalog vec nije aktiviran). Aktivirati sve naloge za koje je potrebno skinuti
+  JKS fajl, jer je njega moguce skinuti samo za naloge koji su aktivni.
+- Ulogovati se kao user i u sekciji profil na vrhu stranice kliknuti na dugme za preuzimanje JKS-a (Ovo dugme postoji
+  samo kod regularnih korisnika i kada se jednom preuzme JKS, dugme se vise ne pojavljuje za tog korisnika). Ovo uraditi
+  za svakog korisnika koji ce kasnije ucestvovati u komunikaciji u klijentskoj aplikaciji.
+- Napravljeni JKS fajlovi bi trebali da se nalaze u data folderu klijentske aplikacije, desava se da eclipse to ne
+  registruje cak iako se tamo zaista nalaze JKS fajlovi. Ukoliko se to desi, kroz File Explorer na racunaru pronaci
+  taj folder, kopirati JKS fajlove, a zatim ih ubaciti u data folder klijentske aplikacije u eclipse programu.
+- Pokrenuti WriteMailClient u desktop aplikaciji.
+- Ulogovati se sa emailom, zatim isti taj email uneti kada aplikacija zatrazi da unesete vas email. Dalje uneti email
+  adresu korisnika kome se salje email, naslov poruke i sadrzaj poruke. U ovom trenutku pojavice se 3 nova xml fajla u data
+  folderu klijentske aplikacije (userEmail.xml, userEmail_signed.xml, userEmail_enc.xml). Aplikacija je napravila xml
+  fajl, potpisala, enkodovala i poslala ga. U ovom trenutku, ako to zelimo, mozemo i da izbrisemo ta 3 xml fajla.
+- Pokrenuti ReadMailClient u desktop aplikaciji.
+- Ulogovati se sa emailom. U aplikaciji odabrati zeljeni email, kucanjem njegovog indeksa. Aplikacija ce da skine i 
+  dekriptuje izabrani email, da verifikuje digitalni potpis i da ispise "true" jer poruka nije  menjana, a zatim ce 
+  promeniti dokument i opet pokusati da verifikuje digitalni potpis, ovaj put ce ispisati "false" jer je poruka promenjena. 
+  Na kraju ce ispisati email.
+  
+Projekat se nalazi na novom repozitorijumu jer sam imao problema sa starim. Na ovom repozitorijumu nema komitova, ako 
+zelite da vidite prethodne komitove, pogledajte ih na ovom repozitorijumu: https://github.com/ivang5/IB
